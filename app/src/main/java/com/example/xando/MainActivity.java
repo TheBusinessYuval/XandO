@@ -2,6 +2,10 @@ package com.example.xando;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +16,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private SoundPool soundPool;
+    private  int sound1;
     boolean isDone = false;
     private int size = 3;
     private Button[][] buttons;
@@ -28,6 +34,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+{
+    AudioAttributes audioAttributes = new AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .build();
+    soundPool = new SoundPool.Builder()
+            .setMaxStreams(1)
+            .setAudioAttributes(audioAttributes)
+            .build();
+
+}
+    else
+{
+    soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC,0);
+}
+    sound1 = soundPool.load(this,R.raw.sound1,1);
 
         buttons = new Button[size][size];
         super.onCreate(savedInstanceState);
@@ -60,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             ((Button) v).setText("O");
         }
-
+soundPool.play(sound1,1,1,0,0,1);
         roundCount++;
 
         if (checkForWin()) {
