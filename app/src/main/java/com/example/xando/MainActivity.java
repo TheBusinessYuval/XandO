@@ -84,6 +84,7 @@ if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             ((Button) v).setText("O");
         }
 soundPool.play(sound1,1,1,0,0,1);
+        soundPool.stop(sound1);
         roundCount++;
 
         if (checkForWin()) {
